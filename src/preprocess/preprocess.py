@@ -2,8 +2,7 @@ import re
 import os
 import json
 from sentence_transformers import SentenceTransformer
-import faiss
-import numpy as np
+from faiss_setup import *
 
 def clean_text(text: str) -> str:
 
@@ -29,38 +28,18 @@ def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
 
 model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-def get_embedding(text: str, model='text-embedding-ada-002'):
-    return model.encode([text])[0].to_list()
-
-class FaissIndex:
-    def __init__(self, vector_dim: int):
-        self.index = faiss.IndexFlatL2(vector_dim)
-        self.embeddings = [] #For embeddings
-        self.metadata = [] #Real data
-
-    def add(self, vectors: list[list[float]], meta: list[dict]):
-        arr = np.array(vectors, dtype=np.float32)
-        self.index.add(arr)
-        self.metadata.extend(meta)
-    
-    def search(self, query_vector: list[float], ranks: int):
-        arr = np.array([query_vector], dtype=np.float32)
-        distances, indices = self.index.search(arr, ranks)
-        results = []
-        for dist, idx in zip(distances[0], indices[0]):
-            meta = self.metadata[idx]
-            results.append((dist, meta))
-        return results
-
-    def count(self):
-        return self.index.ntotal
+def get_embedding(text: str):
+    return model.encode([text])[0].tolist() #Wrap it in a list so the single string test vector doesn't
+                                            #generate a float instead of a 1D-np.ndarray. 
     
 def build_index_from_json(path: str):
     with open(path, "r", encoding="utf-8") as f:
         articles = json.load(f)
 
-    test_vector = get_embedding("test")
+    test_vector = get_embedding("test is cool")
+    print(test_vector)
     vector_dim = len(test_vector)
+    # vector_dim = 1536
 
     index = FaissIndex(vector_dim=vector_dim)
 
@@ -93,13 +72,13 @@ def build_index_from_json(path: str):
         print(f"Index build OK, with {index.count()} chunks.")
     return index
 
-
+# TEST
 if __name__ == "__main__" : 
-    path = "data/raw/french_politics_22-02-2025_10-48-43.json"
+    path = "../../data/raw/french_politics_22-02-2025_10-48-43.json"
     faiss_index = build_index_from_json(path)
 
     # Test a query
-    query = "What did Anne Hidalgo say about knife attacks in Paris?"
+    query = "Nouvelle calédonie"
     query_emb = get_embedding(query)
     results = faiss_index.search(query_emb, ranks=3)
     for dist, meta in results:
