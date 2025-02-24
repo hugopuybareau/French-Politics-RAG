@@ -1,8 +1,11 @@
+# src/preprocess/preprocess.py
+
 import re
 import os
 import json
-from sentence_transformers import SentenceTransformer
 from faiss_setup import *
+import sys
+from embedding import *
 
 def clean_text(text: str) -> str:
 
@@ -26,56 +29,39 @@ def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
 
     return chunks
 
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-
-def get_embedding(text: str):
-    return model.encode([text])[0].tolist() #Wrap it in a list so the single string test vector doesn't
-                                            #generate a float instead of a 1D-np.ndarray. 
-    
-def build_index_from_json(path: str):
-    with open(path, "r", encoding="utf-8") as f:
+def process_json_file(json_path: str): #Just returns (vectors, metadata)
+    # Reads the json
+    with open(json_path, "r", encoding="utf-8") as f:
         articles = json.load(f)
 
-    test_vector = get_embedding("test is cool")
-    print(test_vector)
-    vector_dim = len(test_vector)
-    # vector_dim = 1536
+    all_vectors = []
+    all_metadata = []
 
-    index = FaissIndex(vector_dim=vector_dim)
+    # Cleans and chucks the text
+    for article_id, article in enumerate(articles):
+        content = article.get("content", '')
 
-    article_id = 0
-    for article in articles:
-        text = article.get("content", '')
-        text = clean_text(text)
-        chunks = chunk_text(text, chunk_size=300, overlap=50)
+        content = clean_text(content)
+        chunks = chunk_text(content, chunk_size=300, overlap=50)
 
-        vectors = []
-        metadata_list = []
-
-        chunk_id = 0
-        for chunk in chunks:
-            chunk_emb = get_embedding(chunk)
-            vectors.append(chunk_emb)
+        for chunk_id, chunk in enumerate(chunks):
+            vector = get_embedding(chunk)
+            all_vectors.append(vector)
             meta = {
-                "article_id" : article_id,
+                "article_id" : f"{json_path}#{article_id}",
+                "article_key" : article.get("title", "").replace(" ", "") + article.get("link", ""),
+                "title" : article.get("title", ""),
+                "link" : article.get("link", ""),
                 "chunk_id" : chunk_id,
-                "title" : article.get('title', ''),
-                "link" : article.get('link',''),
                 "text" : chunk
             }
-            metadata_list.append(meta)
-            chunk_id += 1
-        
-        index.add(vectors, metadata_list)
-        article_id += 1
-
-        print(f"Index build OK, with {index.count()} chunks.")
-    return index
+            all_metadata.append(meta)
+    return (all_vectors, all_metadata)
 
 # TEST
 if __name__ == "__main__" : 
     path = "../../data/raw/french_politics_22-02-2025_10-48-43.json"
-    faiss_index = build_index_from_json(path)
+    faiss_index = process_json_file(path)
 
     # Test a query
     query = "Nouvelle calédonie"
