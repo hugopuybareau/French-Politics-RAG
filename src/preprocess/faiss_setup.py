@@ -38,21 +38,21 @@ class FaissIndex:
     @classmethod
     def load(cls, index_path, metadata_path):
         if not os.path.exists(index_path) or not os.path.exists(metadata_path):
-            raise FileNotFoundError("Index or metadata file not found.")
+            raise FileNotFoundError("[ERROR] Index or metadata file not found.")
     
         # Load FAISS index
         faiss_index = faiss.read_index(index_path)
 
-        # Load MetaData
-        with open(metadata_path, 'r', encoding='utf-8') as f:
-            metadata = json.load(f)
-
         # Index dimension
         vector_dim = faiss_index.d
         obj = cls(vector_dim)
-        obj.index = cls(faiss_index)
-        obj.metadata = cls(metadata)
-        return metadata
+        obj.index = faiss_index
+
+        # Load MetaData
+        with open(metadata_path, 'r', encoding='utf-8') as f:
+            obj.metadata = json.load(f)
+            
+        return obj
 
 
     @property
