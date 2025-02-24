@@ -30,7 +30,7 @@ def get_article_content(feed_name, url):
 
         return full_text
     except Exception as e:
-        print(f"[INFO] Error fetching content from {url}: {e}")
+        print(f"[ERROR] Error fetching content from {url}: {e}")
         return ""
     
 
