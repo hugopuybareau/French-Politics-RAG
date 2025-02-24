@@ -30,7 +30,7 @@ def get_article_content(feed_name, url):
 
         return full_text
     except Exception as e:
-        print(f"Error fetching content from {url}: {e}")
+        print(f"[INFO] Error fetching content from {url}: {e}")
         return ""
     
 
@@ -56,7 +56,7 @@ def fetch_and_save_rss(feeds, output_dir="data/raw"):
                 "link": link,
                 "pubDate": pubDate,
                 "description": description,
-                "content": full_text
+                "content": full_text,
             }
             all_articles.append(article_data)
 
@@ -69,7 +69,7 @@ def fetch_and_save_rss(feeds, output_dir="data/raw"):
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(all_articles, f, ensure_ascii=False, indent=2)
     
-    print(f"Saved {len(all_articles)} articles to {output_file}")
+    print(f"[INFO] Saved {len(all_articles)} articles to {output_file}")
 
 if __name__ == "__main__":
     fetch_and_save_rss(FEEDS)
