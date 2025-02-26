@@ -51,7 +51,7 @@ class FaissIndex:
         # Load MetaData
         with open(metadata_path, 'r', encoding='utf-8') as f:
             obj.metadata = json.load(f)
-            
+
         return obj
 
 

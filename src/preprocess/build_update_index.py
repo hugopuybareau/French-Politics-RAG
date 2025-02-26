@@ -33,6 +33,7 @@ def build_or_update_index():
 
         for vec, meta in zip(vectors, metadata):
             article_key = meta["article_key"]
+            print(f"[INFO] Treating {article_key}")
             if my_index and my_index.article_already_indexed(article_key): #Skipping articles already indexed
                 print(f"[INFO] Skipping {article_key}")
                 continue

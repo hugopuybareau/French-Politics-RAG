@@ -49,7 +49,7 @@ def process_json_file(json_path: str): #Just returns (vectors, metadata)
             all_vectors.append(vector)
             meta = {
                 "article_id" : f"{json_path}#{article_id}",
-                "article_key" : article.get("title", "").replace(" ", "") + article.get("link", ""),
+                "article_key" : article.get("link", "") + "#" + str(chunk_id),
                 "title" : article.get("title", ""),
                 "link" : article.get("link", ""),
                 "chunk_id" : chunk_id,
