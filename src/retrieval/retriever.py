@@ -1,3 +1,3 @@
 # src/retrieval/retriever.py
 
-from src.preprocess.faiss_setup import FaissIndex
+from preprocess.faiss_setup import FaissIndex

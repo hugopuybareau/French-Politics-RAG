@@ -1,12 +1,15 @@
 # src/preprocess/build_update_index.py
 
 import os
-from glob import glob
+# print(os.path.abspath("../../data/raw/*.json"))
+# print("Current working directory:", os.getcwd())
+# print(os.listdir("../../data/raw/"))
+import glob
 
 from faiss_setup import FaissIndex
 from preprocess import process_json_file
 
-INDEX_DIR = "../../data/index"
+INDEX_DIR = "data/index"
 INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")
 META_PATH = os.path.join(INDEX_DIR, "faiss_meta.json")
 
@@ -21,7 +24,8 @@ def build_or_update_index():
         print("[INFO] Bulding new index new metadata ...")
         my_index = None
 
-    raw_files = glob("../../data/raw/*.json")
+    raw_files = glob.glob("data/raw/*.json")
+    print(f"[INFO] {raw_files}")
     total_new_chunks = 0
 
     for json_path in raw_files:
