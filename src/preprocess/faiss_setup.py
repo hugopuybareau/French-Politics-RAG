@@ -65,6 +65,6 @@ class FaissIndex:
             article_id = meta.get("article_key", "")
             if article_id == article_key:
                 return True
-            return False
+        return False
 
     
