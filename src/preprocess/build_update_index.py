@@ -1,13 +1,10 @@
 # src/preprocess/build_update_index.py
 
 import os
-# print(os.path.abspath("../../data/raw/*.json"))
-# print("Current working directory:", os.getcwd())
-# print(os.listdir("../../data/raw/"))
 import glob
 
-from faiss_setup import FaissIndex
-from preprocess import process_json_file
+from ..preprocess.faiss_setup import FaissIndex
+from ..preprocess.preprocess import process_json_file
 
 INDEX_DIR = "data/index"
 INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")

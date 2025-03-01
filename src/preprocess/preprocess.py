@@ -3,9 +3,10 @@
 import re
 import os
 import json
-from faiss_setup import *
 import sys
-from embedding import *
+
+from ..preprocess.faiss_setup import FaissIndex
+from ..embeddings.embedding import *
 
 def clean_text(text: str) -> str:
 
