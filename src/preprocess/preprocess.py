@@ -5,7 +5,7 @@ import os
 import json
 import sys
 
-from ..preprocess.faiss_setup import FaissIndex
+from ..faiss.faiss_setup import FaissIndex
 from ..embeddings.embedding import *
 
 def clean_text(text: str) -> str:
