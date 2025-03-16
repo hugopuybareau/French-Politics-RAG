@@ -82,7 +82,7 @@ def answer_question(question: str, ranks: int):
 
 # Testing
 if __name__ == "__main__":
-    test_q = "What did Anne Hidalgo say about knife attacks in Paris recently?"
+    test_q = "Parle moi des news parues sur la compagnie du Mississippi"
     print(f"[INFO] Q: {test_q}")
     ans = answer_question(test_q, ranks=3)
     print("Answer:", ans)

@@ -1,4 +1,4 @@
-# src/preprocess/build_update_index.py
+# src/faiss/build_update_index.py
 
 import os
 import glob
