@@ -6,7 +6,10 @@ from typing import List, Tuple, Dict
 
 from src.retrieval.retriever import retrieve
 
-model_name = "EleutherAI/gpt-neo-1.3B"
+# model_name = "EleutherAI/gpt-neo-1.3B" # Doesn't work
+# model_name = "distilgpt2" # Not instruction tuned
+
+model_name = "tiiuae/falcon-7b-instruct" 
 print(f"[INFO] Loading {model_name} and the tokenizer...")
 
 # GPU 
@@ -16,17 +19,19 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 tokenizer = AutoTokenizer.from_pretrained(model_name) 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
+    # device_map="auto",
+    torch_dtype=torch.float16
 ).to(device)
 print(f"[INFO] Loading OK")
 
 
 # Generation config
 generation_config = GenerationConfig(
-    temperature=0.2,
+    # temperature=0.2,
     max_new_tokens=512,
-    max_lenght=2048,
-    do_sample=True,
-    top_p=0.9,
+    max_length=2048,
+    do_sample=False,
+    # top_p=0.9,
 )
 
 def build_prompt(question: str, retrieved_chunks: List[Tuple[float, dict]]) -> str:
@@ -45,12 +50,12 @@ def build_prompt(question: str, retrieved_chunks: List[Tuple[float, dict]]) -> s
         context_str += (
             f"[Source {i} - (distance : {dist:.2f})]\n"
             f"Title: {title}\n"
-            f"Link: {link}\n"
+            # f"Link: {link}\n"
             # f"{chunk_text}\n\n"
         )
 
     user_question = f"Question: {question}\n\n"
-    prompt = instructions + context_str + user_question + "Answer:"
+    prompt = instructions + context_str + user_question + "Réponds à cette question maintenant:"
     return prompt
 
 def answer_question(question: str, ranks: int):
@@ -72,10 +77,14 @@ def answer_question(question: str, ranks: int):
     # Decoding
     answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
     
+    print(f"[INFO] Raw output: {answer}")
+    
     # We only want the answer
-    answer_split = answer.split("Answer:")
-    if len(answer_split) > 1:
-        answer = answer_split[1].strip()
+    # answer_split = answer.split("Answer:")
+    # if len(answer_split) > 1:
+    #     answer = answer_split[1].strip()
+
+    answer = answer.split("Answer:")[-1].strip()
 
     return answer
 
@@ -85,4 +94,4 @@ if __name__ == "__main__":
     test_q = "Parle moi des news parues sur la compagnie du Mississippi"
     print(f"[INFO] Q: {test_q}")
     ans = answer_question(test_q, ranks=3)
-    print("Answer:", ans)
+    # print("Answer:", ans)

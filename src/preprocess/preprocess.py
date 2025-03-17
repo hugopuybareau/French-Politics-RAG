@@ -61,13 +61,17 @@ def process_json_file(json_path: str): #Just returns (vectors, metadata)
 
 # TEST
 if __name__ == "__main__" : 
-    path = "../../data/raw/french_politics_22-02-2025_10-48-43.json"
-    faiss_index = process_json_file(path)
+
+    INDEX_DIR = "data/index"
+    INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")
+    META_PATH = os.path.join(INDEX_DIR, "faiss_meta.json")
+    
+    my_index = FaissIndex.load(INDEX_PATH, META_PATH, "hnsw")
 
     # Test a query
-    query = "Nouvelle calédonie"
+    query = "Compagnie du mississippi"
     query_emb = get_embedding(query)
-    results = faiss_index.search(query_emb, ranks=3)
+    results = my_index.search(query_emb, ranks=3)
     for dist, meta in results:
         print(f"Distance: {dist:.2f}")
         print(f"Title: {meta['title']}")

@@ -15,7 +15,7 @@ META_PATH = os.path.join(INDEX_DIR, "faiss_meta.json")
 # Load the Faiss index
 try:
     print("[INFO] Loading the Faiss index & metadata ...")
-    faiss_index = FaissIndex.load(INDEX_PATH, META_PATH)
+    faiss_index = FaissIndex.load(INDEX_PATH, META_PATH, "hnsw")
     print(f"[INFO] Loaded the index with {faiss_index.size} vectors.")
 except FileNotFoundError:
     faiss_index = None
