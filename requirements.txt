@@ -6,3 +6,9 @@ sentence-transformers
 numpy
 torch
 transformers
+accelerate
+pydantic
+fastapi
+requests
+uvicorn
+# export PYTHONPATH=/Users/hugopuybareau/Documents/GitHub/Politics-RAG
