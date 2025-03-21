@@ -10,7 +10,7 @@ INDEX_DIR = "data/index"
 INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")
 META_PATH = os.path.join(INDEX_DIR, "faiss_meta.json")
 
-def build_or_update_index(index_type="hnsw"):
+def build_or_update_index(index_type="flat"):
 
     os.makedirs(INDEX_DIR, exist_ok=True)
 
