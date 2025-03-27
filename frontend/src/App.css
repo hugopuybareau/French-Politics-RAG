@@ -1,13 +1,14 @@
 /* App.css */
 
 :root {
-  --primary-color: #39ff14; /* Neon green */
-  --secondary-color: #8bff7a; /* Lighter neon green */
+  --french-blue: #0055A4; /* French flag blue */
+  --french-white: #FFFFFF; /* French flag white */
+  --french-red: #EF4135; /* French flag red */
   --background-color: #1a1a1a; /* Dark grey background */
   --dark-grey: #333333; /* Darker grey */
   --darker-grey: #222222; /* Even darker grey */
   --message-bg-bot: #2a2a2a; /* Dark grey for bot messages */
-  --message-bg-user: #39ff14; /* Neon green for user messages */
+  --message-bg-user: #0055A4; /* French blue for user messages */
   --text-color: #ffffff; /* White text */
   --text-color-dark: #000000; /* Black text */
   --border-color: #444444; /* Dark grey border */
@@ -24,6 +25,36 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* French flag lines */
+body::before, body::after, .app-container::before {
+  content: '';
+  position: absolute;
+  width: 60px; /* Width of each color stripe */
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+/* Blue stripe */
+body::before {
+  background-color: var(--french-blue);
+  left: calc(50% - 90px); /* Center the flag (3 stripes of 60px each = 180px total) */
+}
+
+/* White stripe */
+body::after {
+  background-color: var(--french-white);
+  left: calc(50% - 30px); /* Center stripe */
+}
+
+/* Red stripe */
+.app-container::before {
+  background-color: var(--french-red);
+  left: calc(50% + 30px); /* Right stripe */
 }
 
 .app-container {
@@ -32,6 +63,8 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .chat-container {
@@ -43,6 +76,8 @@ body {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 3;
 }
 
 .chat-header {
@@ -56,8 +91,8 @@ body {
 .chat-header h1 {
   font-size: 20px;
   font-weight: 600;
-  color: var(--primary-color);
-  text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+  color: var(--french-white);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .messages-container {
@@ -68,6 +103,8 @@ body {
   flex-direction: column;
   gap: 24px;
   background-color: var(--darker-grey);
+  position: relative;
+  z-index: 2;
 }
 
 .bot-message, .user-message {
@@ -93,13 +130,13 @@ body {
 }
 
 .bot-avatar {
-  background-color: var(--primary-color);
-  box-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+  background-color: var(--french-red);
+  box-shadow: 0 0 10px rgba(239, 65, 53, 0.4);
 }
 
 .user-avatar {
-  background-color: var(--primary-color);
-  box-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+  background-color: var(--french-blue);
+  box-shadow: 0 0 10px rgba(0, 85, 164, 0.4);
 }
 
 .message-content {
@@ -117,7 +154,7 @@ body {
 
 .user-message .message-content {
   background-color: var(--message-bg-user);
-  color: var(--text-color-dark);
+  color: var(--text-color);
   border-bottom-right-radius: 4px;
   font-weight: 500;
 }
@@ -139,7 +176,7 @@ body {
   background-color: #222222;
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--french-blue);
   overflow-x: auto;
   margin: 12px 0;
 }
@@ -171,8 +208,8 @@ body {
 }
 
 .input-form input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+  border-color: var(--french-blue);
+  box-shadow: 0 0 8px rgba(0, 85, 164, 0.4);
 }
 
 .input-form input::placeholder {
@@ -180,8 +217,8 @@ body {
 }
 
 .input-form button {
-  background-color: var(--primary-color);
-  color: var(--text-color-dark);
+  background-color: var(--french-blue);
+  color: var(--text-color);
   width: 44px;
   height: 44px;
   border: none;
@@ -192,11 +229,11 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
+  box-shadow: 0 0 15px rgba(0, 85, 164, 0.4);
 }
 
 .input-form button:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--french-red);
   transform: scale(1.05);
 }
 
@@ -219,21 +256,24 @@ body {
 .typing-indicator span {
   width: 8px;
   height: 8px;
-  background-color: var(--primary-color);
+  background-color: var(--french-blue);
   border-radius: 50%;
   display: inline-block;
   animation: typing 1.4s infinite ease-in-out both;
 }
 
 .typing-indicator span:nth-child(1) {
+  background-color: var(--french-blue);
   animation-delay: 0s;
 }
 
 .typing-indicator span:nth-child(2) {
+  background-color: var(--french-white);
   animation-delay: 0.2s;
 }
 
 .typing-indicator span:nth-child(3) {
+  background-color: var(--french-red);
   animation-delay: 0.4s;
 }
 
@@ -258,7 +298,7 @@ body {
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 8px;
-  color: var(--primary-color);
+  color: var(--french-blue);
 }
 
 .chunk {
@@ -279,7 +319,7 @@ body {
 
 .chunk-title {
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--french-blue);
 }
 
 .chunk-score {
@@ -288,7 +328,7 @@ body {
 }
 
 .chunk a {
-  color: var(--primary-color);
+  color: var(--french-blue);
   text-decoration: none;
   font-size: 13px;
   word-break: break-all;
@@ -296,7 +336,7 @@ body {
 
 .chunk a:hover {
   text-decoration: underline;
-  text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+  text-shadow: 0 0 5px rgba(0, 85, 164, 0.5);
 }
 
 /* Custom scrollbar */
@@ -314,5 +354,5 @@ body {
 }
 
 .messages-container::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+  background: var(--french-blue);
 }

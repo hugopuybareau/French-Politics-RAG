@@ -11,4 +11,5 @@ pydantic
 fastapi
 requests
 uvicorn
+ollama
 # export PYTHONPATH=/Users/hugopuybareau/Documents/GitHub/Politics-RAG

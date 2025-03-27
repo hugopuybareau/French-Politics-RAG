@@ -3,8 +3,8 @@
 import os
 import glob
 
-from src.faiss.faiss_setup import FaissIndex
-from src.preprocess.preprocess import process_json_file
+from backend.faiss.faiss_setup import FaissIndex
+from backend.preprocess.preprocess import process_json_file
 
 INDEX_DIR = "data/index"
 INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")

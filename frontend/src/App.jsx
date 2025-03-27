@@ -41,7 +41,7 @@ function App() {
 
     try {
       // Call your FastAPI endpoint
-      const response = await fetch('http://localhost:8000/ask', {
+      const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

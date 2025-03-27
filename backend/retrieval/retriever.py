@@ -1,12 +1,12 @@
-# src/retrieval/retriever.py
+# backend/retrieval/retriever.py
 
 import os
 import faiss
 import json
 import numpy as np
 
-from src.embeddings.embedding import get_embedding
-from src.faiss.faiss_setup import FaissIndex
+from backend.embeddings.embedding import get_embedding
+from backend.faiss.faiss_setup import FaissIndex
 
 INDEX_DIR = os.path.join("data/index")
 INDEX_PATH = os.path.join(INDEX_DIR, "faiss.index")

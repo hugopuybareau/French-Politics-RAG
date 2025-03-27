@@ -1,12 +1,12 @@
-# src/preprocess/preprocess.py
+# backend/preprocess/preprocess.py
 
 import re
 import os
 import json
 import sys
 
-from src.faiss.faiss_setup import FaissIndex
-from src.embeddings.embedding import *
+from backend.faiss.faiss_setup import FaissIndex
+from backend.embeddings.embedding import *
 
 def clean_text(text: str) -> str:
 
